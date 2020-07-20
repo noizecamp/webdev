@@ -11,7 +11,15 @@
  *
  */
 
-export class TempTracker {}
+export class TempTracker {
+  setTemp(newVal){
+    this.temp = newVal;
+  }
+
+  getTemp(){
+    return this.temp;
+  }
+}
 
 /**
  * Create a class `AverageTempTracker`
@@ -25,7 +33,29 @@ export class TempTracker {}
  *
  */
 
-export class AverageTempTracker {}
+export class AverageTempTracker extends TempTracker {
+  constructor(){
+    super();
+    this.temps = [];
+  }
+  
+  setTemp(newVal){
+    super.setTemp(newVal);
+    this.temps.push(newVal);
+  }
+
+  getTemp(){
+    return super.getTemp();
+  }
+
+  getAverageTemp(){
+    var total = this.temps.reduce(function(sum, arr) {       
+      return sum + arr;  
+    },0);
+
+    return total / this.temps.length;
+  }  
+}
 
 /**
  * Create a class `BoundedTempTracker`
@@ -44,7 +74,29 @@ export class AverageTempTracker {}
  *
  */
 
-export class BoundedTempTracker {}
+export class BoundedTempTracker extends TempTracker{
+  
+  constructor(){
+    super();
+    this.counter = new Counter();
+  }
+
+  setTemp(newVal){
+    if(newVal < 0 || newVal > 100){
+      return;
+    }
+    super.setTemp(newVal);
+  }
+
+  getTemp(){
+    this.counter.tick();
+    return super.getTemp();
+  }
+
+  getTempReads(){
+    return this.counter.tick() - 1;
+  }
+}
 
 export class Counter {
   /**
@@ -52,7 +104,7 @@ export class Counter {
    * the `constructor` method.
    */
   constructor() {
-    this.counter = 1
+    this.counter = 1;
   }
 
   /**
